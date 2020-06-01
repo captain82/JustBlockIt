@@ -23,7 +23,7 @@ class IncomingCallReceiver:BroadcastReceiver() {
                 val m = tm.javaClass.getDeclaredMethod("getITelephony")
                 m.isAccessible = true
                 telephonyService =  m.invoke(tm) as ITelephony
-                if(number !=null){
+                if(number =="+918292516644"){
                     telephonyService.endCall()
                     Toast.makeText(context, "Ending the call from: " + number, Toast.LENGTH_SHORT).show();
                 }
@@ -32,14 +32,11 @@ class IncomingCallReceiver:BroadcastReceiver() {
             }
             Toast.makeText(context, "Ring " + number, Toast.LENGTH_SHORT).show();
         }
-
         if(state.equals(TelephonyManager.EXTRA_STATE_OFFHOOK)){
             Toast.makeText(context, "Answered " + number, Toast.LENGTH_SHORT).show();
         }
         if(state.equals(TelephonyManager.EXTRA_STATE_IDLE)){
             Toast.makeText(context, "Idle "+ number, Toast.LENGTH_SHORT).show();
         }
-
-
     }
 }
