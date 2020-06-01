@@ -20,6 +20,9 @@ class MainActivity : AppCompatActivity() {
         ViewModelProviders.of(this).get(ContactsViewModel::class.java)
     }
 
+    val adapter = ContactsRecyclerAdapter()
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -32,6 +35,8 @@ class MainActivity : AppCompatActivity() {
             decor.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         }
 
+        recyclerView.adapter = adapter
+
         floatingActionButton.setOnClickListener {
             startActivityForResult(Intent(this,
                 AddContactActivity::class.java),LAUNCH_SECOND_ACTIVITY)
@@ -39,7 +44,11 @@ class MainActivity : AppCompatActivity() {
 
         newsViewModel.getContacts()
         newsViewModel.contactList.observe(this, Observer {
-            it.forEach { Log.i("Numbers" , it.number)}
+            val contactList  = mutableListOf<String>()
+            it.forEach {contactList.add(it.number)}
+
+            adapter.setData(contactList)
+
             //IncomingCallReceiver().numbersList = it
         })
     }
