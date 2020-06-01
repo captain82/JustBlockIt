@@ -12,9 +12,9 @@ import java.lang.Exception
 class IncomingCallReceiver:BroadcastReceiver() {
     @SuppressLint("SoonBlockedPrivateApi")
 
-    val numbersList = listOf<String>("+919955318772" , "+919123485172","+919353888768")
-    override fun onReceive(context: Context?, intent: Intent?) {
+    val numbersList = listOf<String>()
 
+    override fun onReceive(context: Context?, intent: Intent?) {
         var telephonyService: ITelephony
         val state = intent?.getStringExtra(TelephonyManager.EXTRA_STATE)
         val number = intent?.extras?.getString(TelephonyManager.EXTRA_INCOMING_NUMBER)
