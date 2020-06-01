@@ -4,6 +4,9 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'kotlin-kapt'
+
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
@@ -25,11 +28,24 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.core:core-ktx:1.3.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    implementation 'com.android.support:design:28.0.0'
+
+    // RxJava support for Room
+    implementation 'androidx.room:room-rxjava2:' + rootProject.ext.rxJava
+    implementation 'androidx.room:room-runtime:' + rootProject.ext.rxJava
+    kapt 'androidx.room:room-compiler:' + rootProject.ext.rxJava
+
+    //RxJava and RxAndroid
+    implementation 'io.reactivex.rxjava2:rxjava:' + rootProject.ext.rxJava
+    implementation 'com.jakewharton.rxbinding2:rxbinding:' + rootProject.ext.rxBinding
+    implementation 'io.reactivex.rxjava2:rxandroid:' + rootProject.ext.rxBinding
+    implementation 'com.jakewharton.rxbinding2:rxbinding-support-v4:' + rootProject.ext.rxBindingSupport
 }

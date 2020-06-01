@@ -11,6 +11,8 @@ import java.lang.Exception
 
 class IncomingCallReceiver:BroadcastReceiver() {
     @SuppressLint("SoonBlockedPrivateApi")
+
+    val numbersList = listOf<String>("+919955318772" , "+919123485172","+919353888768")
     override fun onReceive(context: Context?, intent: Intent?) {
 
         var telephonyService: ITelephony
@@ -23,7 +25,7 @@ class IncomingCallReceiver:BroadcastReceiver() {
                 val m = tm.javaClass.getDeclaredMethod("getITelephony")
                 m.isAccessible = true
                 telephonyService =  m.invoke(tm) as ITelephony
-                if(number =="+918292516644"){
+                if(number in numbersList){
                     telephonyService.endCall()
                     Toast.makeText(context, "Ending the call from: " + number, Toast.LENGTH_SHORT).show();
                 }
