@@ -43,6 +43,9 @@ dependencies {
     implementation 'androidx.room:room-runtime:' + rootProject.ext.rxJava
     kapt 'androidx.room:room-compiler:' + rootProject.ext.rxJava
 
+    implementation "android.arch.lifecycle:extensions:" + rootProject.ext.lifecycle_version
+
+
     //RxJava and RxAndroid
     implementation 'io.reactivex.rxjava2:rxjava:' + rootProject.ext.rxJava
     implementation 'com.jakewharton.rxbinding2:rxbinding:' + rootProject.ext.rxBinding
