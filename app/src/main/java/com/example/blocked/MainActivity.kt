@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         ViewModelProviders.of(this).get(ContactsViewModel::class.java)
     }
 
-    private lateinit var adapter:ContactsRecyclerAdapter
+    private lateinit var adapter: ContactsRecyclerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,22 +36,30 @@ class MainActivity : AppCompatActivity() {
         }
 
         adapter = ContactsRecyclerAdapter {
-            Log.i("Delete" , it)
+            Log.i("Delete", it)
             contactsViewModel.deleteContact(it)
         }
 
         recyclerView.adapter = adapter
 
         floatingActionButton.setOnClickListener {
-            startActivityForResult(Intent(this,
-                AddContactActivity::class.java),LAUNCH_SECOND_ACTIVITY)
+            startActivityForResult(
+                Intent(
+                    this,
+                    AddContactActivity::class.java
+                ), LAUNCH_SECOND_ACTIVITY
+            )
         }
 
         contactsViewModel.getContacts()
         contactsViewModel.contactList.observe(this, Observer {
-            val contactList  = mutableListOf<String>()
-            it.forEach {contactList.add(it.number)}
-            adapter.setData(contactList)
+            val contactList = mutableListOf<String>()
+            val colorList = mutableListOf<Int>()
+            it.forEach {
+                contactList.add(it.number)
+                colorList.add(it.color)
+            }
+            adapter.setData(contactList,colorList)
             Util.blockedNumberList = contactList
         })
     }
@@ -59,7 +67,7 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == LAUNCH_SECOND_ACTIVITY && resultCode==Activity.RESULT_OK){
+        if (requestCode == LAUNCH_SECOND_ACTIVITY && resultCode == Activity.RESULT_OK) {
             contactsViewModel.insertContact("+91${data?.getStringExtra("result")}")
         }
     }
