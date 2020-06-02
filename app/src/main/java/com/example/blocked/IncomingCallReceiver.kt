@@ -13,7 +13,7 @@ class IncomingCallReceiver:BroadcastReceiver() {
     @SuppressLint("SoonBlockedPrivateApi")
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        var telephonyService: ITelephony
+        val telephonyService: ITelephony
         val state = intent?.getStringExtra(TelephonyManager.EXTRA_STATE)
         val number = intent?.extras?.getString(TelephonyManager.EXTRA_INCOMING_NUMBER)
 
@@ -25,7 +25,6 @@ class IncomingCallReceiver:BroadcastReceiver() {
                 telephonyService =  m.invoke(tm) as ITelephony
                 if(number in Util.blockedNumberList){
                     telephonyService.endCall()
-                    context.sendBroadcast(Intent("CALL_REJECTED"))
                     Toast.makeText(context, "Blocking the call from: ${number}", Toast.LENGTH_SHORT).show();
                 }
             }catch (e:Exception){

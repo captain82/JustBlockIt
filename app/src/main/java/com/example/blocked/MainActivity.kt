@@ -15,12 +15,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    val LAUNCH_SECOND_ACTIVITY = 1
-
-    private val contactsViewModel: ContactsViewModel by lazy {
-        ViewModelProviders.of(this).get(ContactsViewModel::class.java)
-    }
-
+    private val LAUNCH_SECOND_ACTIVITY = 1
+    private lateinit var contactsViewModel: ContactsViewModel
     private lateinit var adapter: ContactsRecyclerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,7 +29,11 @@ class MainActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val decor = window.decorView
             decor.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+
         }
+
+        contactsViewModel = ViewModelProviders.of(this).get(ContactsViewModel::class.java)
+
 
         adapter = ContactsRecyclerAdapter {
             Log.i("Delete", it)
@@ -51,8 +51,13 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
-        contactsViewModel.getContacts()
+        if (contactsViewModel.contactList.value.isNullOrEmpty()){
+            contactsViewModel.getContacts()
+            Log.i("Rotate" , "onCreate")
+
+        }
         contactsViewModel.contactList.observe(this, Observer {
+            Log.i("Rotate" , "hanges")
             val contactList = mutableListOf<String>()
             val colorList = mutableListOf<Int>()
             it.forEach {
