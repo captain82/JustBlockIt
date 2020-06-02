@@ -1,10 +1,9 @@
-package com.example.blocked
+package com.example.blocked.local
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
 
 @Database(entities = [ContactModel::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {

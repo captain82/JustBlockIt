@@ -1,4 +1,4 @@
-package com.example.blocked
+package com.example.blocked.local
 
 import androidx.room.Dao
 import androidx.room.Insert

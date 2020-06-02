@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="false"
     android:id="@+id/root"
-    tools:context=".AddContactActivity">
+    tools:context=".view.AddContactActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/background"

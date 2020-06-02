@@ -4,21 +4,4 @@
     <color name="colorPrimaryDark">#2979FF</color>
     <color name="colorAccent">#2979FF</color>
     <color name="scrim">#99323232</color>
-
-    <item name="blue" type="color">#ccedd2 </item>
-    <item name="purple" type="color">#ffecc7</item>
-    <item name="green" type="color">#fff5ee</item>
-    <item name="red" type="color">#f0eeb1</item>
-    <item name="darkblue" type="color">#deecfc</item>
-
-
-    <integer-array name="androidcolors">
-        <item>@color/blue</item>
-        <item>@color/purple</item>
-        <item>@color/green</item>
-        <item>@color/red</item>
-        <item>@color/darkblue</item>
-
-    </integer-array>
-
 </resources>

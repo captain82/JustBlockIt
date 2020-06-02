@@ -1,4 +1,4 @@
-package com.example.blocked
+package com.example.blocked.view
 
 import android.Manifest
 import android.app.Activity
@@ -7,12 +7,12 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.example.blocked.*
+import com.example.blocked.Utils.Util
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -37,28 +37,16 @@ class MainActivity : AppCompatActivity() {
 
         }
 
+        askPermissisons()
         contactsViewModel = ViewModelProviders.of(this).get(ContactsViewModel::class.java)
-
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_DENIED || checkSelfPermission(
-                    Manifest.permission.CALL_PHONE
-                ) == PackageManager.PERMISSION_DENIED
-            ) {
-                val permissions = arrayOf<String>(
-                    Manifest.permission.READ_PHONE_STATE,
-                    Manifest.permission.CALL_PHONE
-                )
-                requestPermissions(permissions, PERMISSION_REQUEST_CODE)
-            }
+        if (contactsViewModel.contactList.value.isNullOrEmpty()) {
+            contactsViewModel.getContacts()
         }
+
         adapter = ContactsRecyclerAdapter {
-            Log.i("Delete", it)
             contactsViewModel.deleteContact(it)
         }
-
         recyclerView.adapter = adapter
-
         floatingActionButton.setOnClickListener {
             startActivityForResult(
                 Intent(
@@ -68,13 +56,8 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
-        if (contactsViewModel.contactList.value.isNullOrEmpty()) {
-            contactsViewModel.getContacts()
-            Log.i("Rotate", "onCreate")
 
-        }
         contactsViewModel.contactList.observe(this, Observer {
-            Log.i("Rotate", "hanges")
             val contactList = mutableListOf<String>()
             val colorList = mutableListOf<Int>()
             it.forEach {
@@ -91,6 +74,21 @@ class MainActivity : AppCompatActivity() {
 
         if (requestCode == LAUNCH_SECOND_ACTIVITY && resultCode == Activity.RESULT_OK) {
             contactsViewModel.insertContact("+91${data?.getStringExtra("result")}")
+        }
+    }
+
+    private fun askPermissisons(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_DENIED || checkSelfPermission(
+                    Manifest.permission.CALL_PHONE
+                ) == PackageManager.PERMISSION_DENIED
+            ) {
+                val permissions = arrayOf<String>(
+                    Manifest.permission.READ_PHONE_STATE,
+                    Manifest.permission.CALL_PHONE
+                )
+                requestPermissions(permissions, PERMISSION_REQUEST_CODE)
+            }
         }
     }
 }
