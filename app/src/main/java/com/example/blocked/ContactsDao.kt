@@ -13,4 +13,7 @@ interface ContactsDao {
 
     @Query("SELECT * FROM `blocked numbers`")
     fun query(): Observable<List<ContactModel>>
+
+    @Query("DELETE FROM `blocked numbers` WHERE number LIKE :number")
+    fun deleteContact(number: String)
 }

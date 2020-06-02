@@ -15,11 +15,12 @@ class ContactsViewModel(application: Application) : AndroidViewModel(application
 
     private val compositeDisposable = CompositeDisposable()
 
-    val contactList:MutableLiveData<List<ContactModel>> = MutableLiveData()
+    val contactList: MutableLiveData<List<ContactModel>> = MutableLiveData()
 
-    fun insertContact(contact:String) = compositeDisposable.add(
+    fun insertContact(contact: String) = compositeDisposable.add(
         Completable.fromAction {
-            database?.contactDao()?.insert(ContactModel(contact))}
+            database?.contactDao()?.insert(ContactModel(contact))
+        }
             .doOnError { Log.i("error", it.localizedMessage) }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -32,5 +33,13 @@ class ContactsViewModel(application: Application) : AndroidViewModel(application
             .subscribe {
                 contactList.value = it
             }
+    )
+
+    fun deleteContact(contact: String) = compositeDisposable.add(
+        Completable.fromAction { database?.contactDao()?.deleteContact(contact) }
+            .doOnError { Log.i("error", it.localizedMessage) }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe()
     )
 }

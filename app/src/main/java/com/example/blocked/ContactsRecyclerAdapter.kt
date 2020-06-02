@@ -8,7 +8,7 @@ import kotlinx.android.synthetic.main.recycler_single_item.view.*
 import kotlin.random.Random
 
 
-class ContactsRecyclerAdapter:RecyclerView.Adapter<ContactsRecyclerAdapter.ViewHolder>() {
+class ContactsRecyclerAdapter(val delete:(String)->Unit):RecyclerView.Adapter<ContactsRecyclerAdapter.ViewHolder>() {
 
     private var contactList = listOf<String>()
 
@@ -25,7 +25,9 @@ class ContactsRecyclerAdapter:RecyclerView.Adapter<ContactsRecyclerAdapter.ViewH
         val androidColors: IntArray = holder.itemView.context.resources.getIntArray(R.array.androidcolors)
         val randomAndroidColor = androidColors[Random.nextInt(androidColors.size)]
         holder.itemView.setBackgroundColor(randomAndroidColor)
-        //holder.itemView.mainBackground.setBackgroundColor()
+        holder.itemView.deleteButton.setOnClickListener {
+            delete.invoke(contactList[position])
+        }
     }
 
     fun setData(list:List<String>){

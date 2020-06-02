@@ -12,16 +12,16 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.activity_main.*
 
+
 class MainActivity : AppCompatActivity() {
 
     val LAUNCH_SECOND_ACTIVITY = 1
 
-    private val newsViewModel: ContactsViewModel by lazy {
+    private val contactsViewModel: ContactsViewModel by lazy {
         ViewModelProviders.of(this).get(ContactsViewModel::class.java)
     }
 
-    val adapter = ContactsRecyclerAdapter()
-
+    private lateinit var adapter:ContactsRecyclerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +35,11 @@ class MainActivity : AppCompatActivity() {
             decor.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         }
 
+        adapter = ContactsRecyclerAdapter {
+            Log.i("Delete" , it)
+            contactsViewModel.deleteContact(it)
+        }
+
         recyclerView.adapter = adapter
 
         floatingActionButton.setOnClickListener {
@@ -42,14 +47,12 @@ class MainActivity : AppCompatActivity() {
                 AddContactActivity::class.java),LAUNCH_SECOND_ACTIVITY)
         }
 
-        newsViewModel.getContacts()
-        newsViewModel.contactList.observe(this, Observer {
+        contactsViewModel.getContacts()
+        contactsViewModel.contactList.observe(this, Observer {
             val contactList  = mutableListOf<String>()
             it.forEach {contactList.add(it.number)}
-
             adapter.setData(contactList)
-
-            //IncomingCallReceiver().numbersList = it
+            Util.blockedNumberList = contactList
         })
     }
 
@@ -57,8 +60,7 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == LAUNCH_SECOND_ACTIVITY && resultCode==Activity.RESULT_OK){
-            newsViewModel.insertContact("+91${data?.getStringExtra("result")}")
-
+            contactsViewModel.insertContact("+91${data?.getStringExtra("result")}")
         }
     }
 
