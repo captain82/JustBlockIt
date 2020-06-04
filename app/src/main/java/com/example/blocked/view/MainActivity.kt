@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.blocked.*
 import com.example.blocked.Utils.Util
+import com.facebook.stetho.Stetho
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -27,6 +28,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        Stetho.initializeWithDefaults(this)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.statusBarColor = Color.TRANSPARENT
@@ -56,11 +59,10 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
-
         contactsViewModel.contactList.observe(this, Observer {
             val contactList = mutableListOf<String>()
             val colorList = mutableListOf<Int>()
-            it.forEach {
+            it?.forEach {
                 contactList.add(it.number)
                 colorList.add(it.color)
             }

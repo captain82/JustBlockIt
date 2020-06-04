@@ -1,5 +1,6 @@
 package com.example.blocked.local
 
+import androidx.paging.DataSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -13,6 +14,9 @@ interface ContactsDao {
 
     @Query("SELECT * FROM `blocked numbers`")
     fun query(): Observable<List<ContactModel>>
+
+    @Query("SELECT * FROM `blocked numbers`")
+    fun queryPaged(): DataSource.Factory<Int,ContactModel>
 
     @Query("DELETE FROM `blocked numbers` WHERE number LIKE :number")
     fun deleteContact(number: String)

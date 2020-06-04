@@ -51,4 +51,12 @@ dependencies {
     implementation 'com.jakewharton.rxbinding2:rxbinding:' + rootProject.ext.rxBinding
     implementation 'io.reactivex.rxjava2:rxandroid:' + rootProject.ext.rxBinding
     implementation 'com.jakewharton.rxbinding2:rxbinding-support-v4:' + rootProject.ext.rxBindingSupport
+
+
+    implementation 'com.facebook.stetho:stetho:1.5.0'
+
+    implementation "androidx.paging:paging-runtime-ktx:2.1.2" // For Kotlin use paging-runtime-ktx
+    implementation "androidx.paging:paging-rxjava2-ktx:2.1.2" // For Kotlin use paging-rxjava2-ktx
+
+
 }

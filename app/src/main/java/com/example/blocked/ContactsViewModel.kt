@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.paging.RxPagedListBuilder
 import com.example.blocked.local.AppDatabase
 import com.example.blocked.local.ContactModel
 import io.reactivex.Completable
@@ -34,12 +35,15 @@ class ContactsViewModel(application: Application) : AndroidViewModel(application
             .subscribe())
 
     fun getContacts() = compositeDisposable.add(
-        database!!.contactDao().query()
+        RxPagedListBuilder(database!!.contactDao().queryPaged(),10)
+            .buildObservable()
             .subscribeOn(Schedulers.io())
+            .doOnError { Log.i("error", it.localizedMessage) }
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
+            .subscribe ({
                 contactList.value = it
-            }
+                Log.i("Pager" , it.size.toString())
+            },{ Log.i("error", it.localizedMessage)})
     )
 
     fun deleteContact(contact: String) = compositeDisposable.add(
