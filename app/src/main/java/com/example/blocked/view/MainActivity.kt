@@ -1,8 +1,6 @@
 package com.example.blocked.view
 
 import android.Manifest
-import android.app.Activity
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Build
@@ -10,9 +8,13 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.example.blocked.*
+import com.example.blocked.ContactsViewModel
+import com.example.blocked.R
 import com.example.blocked.Utils.Util
 import com.facebook.stetho.Stetho
 import kotlinx.android.synthetic.main.activity_main.*
@@ -52,12 +54,22 @@ class MainActivity : AppCompatActivity() {
         }
         recyclerView.adapter = adapter
         floatingActionButton.setOnClickListener {
-            startActivityForResult(
+
+            val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
+            val prev: Fragment? = supportFragmentManager.findFragmentByTag("dialog")
+            if (prev != null) {
+                ft.remove(prev)
+            }
+            ft.addToBackStack(null)
+            val dialogFragment: DialogFragment =
+                AddContactDialogFragment()
+            dialogFragment.show(ft, "dialog")
+            /*startActivityForResult(
                 Intent(
                     this,
                     AddContactActivity::class.java
                 ), LAUNCH_SECOND_ACTIVITY
-            )
+            )*/
         }
 
         contactsViewModel.contactList.observe(this, Observer {
@@ -75,14 +87,14 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+   /* override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == LAUNCH_SECOND_ACTIVITY && resultCode == Activity.RESULT_OK) {
             Log.i("data" , data?.getStringExtra("result"))
             contactsViewModel.insertContact("+91${data?.getStringExtra("result")}")
         }
-    }
+    }*/
 
     private fun askPermissisons() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
