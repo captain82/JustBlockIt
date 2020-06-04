@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.paging.PagedList
 import androidx.paging.RxPagedListBuilder
 import com.example.blocked.local.AppDatabase
 import com.example.blocked.local.ContactModel
@@ -14,11 +15,16 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlin.random.Random
 
+
 class ContactsViewModel(application: Application) : AndroidViewModel(application) {
 
     private var database = AppDatabase.getDatabase(application)
     private val compositeDisposable = CompositeDisposable()
-    val contactList: MutableLiveData<List<ContactModel>> = MutableLiveData()
+    val contactList: MutableLiveData<PagedList<ContactModel>> = MutableLiveData()
+
+    var pagedListConfig = PagedList.Config.Builder()
+        .setEnablePlaceholders(false)
+        .setPageSize(10).build()
 
     fun insertContact(contact: String) = compositeDisposable.add(
         Completable.fromAction {
@@ -35,7 +41,7 @@ class ContactsViewModel(application: Application) : AndroidViewModel(application
             .subscribe())
 
     fun getContacts() = compositeDisposable.add(
-        RxPagedListBuilder(database!!.contactDao().queryPaged(),10)
+        RxPagedListBuilder(database!!.contactDao().queryPaged(), pagedListConfig)
             .buildObservable()
             .subscribeOn(Schedulers.io())
             .doOnError { Log.i("error", it.localizedMessage) }

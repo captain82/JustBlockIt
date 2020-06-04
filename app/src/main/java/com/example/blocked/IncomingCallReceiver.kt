@@ -5,14 +5,15 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.telephony.TelephonyManager
+import android.util.Log
 import android.widget.Toast
 import com.android.internal.telephony.ITelephony
 import com.example.blocked.Utils.Util
 import java.lang.Exception
 
 class IncomingCallReceiver:BroadcastReceiver() {
-    @SuppressLint("SoonBlockedPrivateApi")
 
+    @SuppressLint("SoonBlockedPrivateApi")
     override fun onReceive(context: Context?, intent: Intent?) {
         val telephonyService: ITelephony
         val state = intent?.getStringExtra(TelephonyManager.EXTRA_STATE)
@@ -26,8 +27,10 @@ class IncomingCallReceiver:BroadcastReceiver() {
                 telephonyService =  m.invoke(tm) as ITelephony
                 if(number in Util.blockedNumberList){
                     telephonyService.endCall()
+                    Log.i("Showing" , "true")
                     Toast.makeText(context, "Blocking the call from: ${number}", Toast.LENGTH_SHORT).show();
                 }
+                Toast.makeText(context,number,Toast.LENGTH_LONG).show()
             }catch (e:Exception){
                 e.printStackTrace()
             }

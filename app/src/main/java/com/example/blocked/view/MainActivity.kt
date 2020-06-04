@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -60,13 +61,16 @@ class MainActivity : AppCompatActivity() {
         }
 
         contactsViewModel.contactList.observe(this, Observer {
+            adapter.submitList(it)
+            Log.i("Object" , it.toString())
             val contactList = mutableListOf<String>()
             val colorList = mutableListOf<Int>()
             it?.forEach {
                 contactList.add(it.number)
                 colorList.add(it.color)
             }
-            adapter.setData(contactList, colorList)
+
+            //adapter.setData(contactList, colorList)
             Util.blockedNumberList = contactList
         })
     }
@@ -75,6 +79,7 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == LAUNCH_SECOND_ACTIVITY && resultCode == Activity.RESULT_OK) {
+            Log.i("data" , data?.getStringExtra("result"))
             contactsViewModel.insertContact("+91${data?.getStringExtra("result")}")
         }
     }
@@ -83,13 +88,18 @@ class MainActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_DENIED || checkSelfPermission(
                     Manifest.permission.CALL_PHONE
-                ) == PackageManager.PERMISSION_DENIED || checkSelfPermission(Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_DENIED
+                ) == PackageManager.PERMISSION_DENIED ||
+                checkSelfPermission(Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_DENIED
+                || checkSelfPermission(Manifest.permission.READ_CALL_LOG) == PackageManager.PERMISSION_DENIED
+                || checkSelfPermission(Manifest.permission.MODIFY_PHONE_STATE) == PackageManager.PERMISSION_DENIED
             ) {
                 val permissions = arrayOf<String>(
                     Manifest.permission.READ_PHONE_STATE,
                     Manifest.permission.CALL_PHONE,
-                    Manifest.permission.READ_CONTACTS
-                )
+                    Manifest.permission.READ_CONTACTS,
+                    Manifest.permission.READ_CALL_LOG,
+                    Manifest.permission.MODIFY_PHONE_STATE
+                    )
                 requestPermissions(permissions, PERMISSION_REQUEST_CODE)
             }
         }
