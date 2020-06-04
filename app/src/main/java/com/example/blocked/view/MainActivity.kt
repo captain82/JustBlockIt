@@ -19,7 +19,6 @@ import com.example.blocked.Utils.Util
 import com.facebook.stetho.Stetho
 import kotlinx.android.synthetic.main.activity_main.*
 
-
 class MainActivity : AppCompatActivity() {
 
     private val LAUNCH_SECOND_ACTIVITY = 1
@@ -64,12 +63,6 @@ class MainActivity : AppCompatActivity() {
             val dialogFragment: DialogFragment =
                 AddContactDialogFragment()
             dialogFragment.show(ft, "dialog")
-            /*startActivityForResult(
-                Intent(
-                    this,
-                    AddContactActivity::class.java
-                ), LAUNCH_SECOND_ACTIVITY
-            )*/
         }
 
         contactsViewModel.contactList.observe(this, Observer {
@@ -81,20 +74,9 @@ class MainActivity : AppCompatActivity() {
                 contactList.add(it.number)
                 colorList.add(it.color)
             }
-
-            //adapter.setData(contactList, colorList)
             Util.blockedNumberList = contactList
         })
     }
-
-   /* override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == LAUNCH_SECOND_ACTIVITY && resultCode == Activity.RESULT_OK) {
-            Log.i("data" , data?.getStringExtra("result"))
-            contactsViewModel.insertContact("+91${data?.getStringExtra("result")}")
-        }
-    }*/
 
     private fun askPermissisons() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

@@ -15,6 +15,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatDialogFragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.blocked.ContactsViewModel
 import com.example.blocked.R
@@ -37,17 +38,15 @@ class AddContactDialogFragment : AppCompatDialogFragment() {
 
         view?.findViewById<Button>(R.id.saveButton)?.setOnClickListener {
             val phoneNumber = view.findViewById<EditText>(R.id.editText)
-            if (phoneNumber.text.isNotEmpty()) {
+            if (phoneNumber.text.isNotEmpty()){
                 addPhoneNumber(phoneNumber.text.toString())
             }
         }
-
         view?.findViewById<TextView>(R.id.selectFromContact)?.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI)
             startActivityForResult(intent, 1)
         }
         return builder.create()
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
