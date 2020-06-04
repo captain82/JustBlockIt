@@ -79,15 +79,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun askPermissisons(){
+    private fun askPermissisons() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_DENIED || checkSelfPermission(
                     Manifest.permission.CALL_PHONE
-                ) == PackageManager.PERMISSION_DENIED
+                ) == PackageManager.PERMISSION_DENIED || checkSelfPermission(Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_DENIED
             ) {
                 val permissions = arrayOf<String>(
                     Manifest.permission.READ_PHONE_STATE,
-                    Manifest.permission.CALL_PHONE
+                    Manifest.permission.CALL_PHONE,
+                    Manifest.permission.READ_CONTACTS
                 )
                 requestPermissions(permissions, PERMISSION_REQUEST_CODE)
             }
