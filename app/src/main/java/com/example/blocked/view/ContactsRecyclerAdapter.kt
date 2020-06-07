@@ -18,42 +18,21 @@ class ContactsRecyclerAdapter(val delete: (String) -> Unit) :
     PagedListAdapter<ContactModel, ContactsRecyclerAdapter.ViewHolder>(
         DIFF_CALLBACK
     ) {
-
-   /* private var contactList = listOf<String>()
-    private var colorList = listOf<Int>()*/
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(parent)
 
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
         val contact = getItem(position)
-
         with(holder) {
             bindTo(contact)
             holder.itemView.deleteButton.setOnClickListener {
                 contact?.number?.let { it1 -> delete.invoke(it1) }
             }
         }
-
-/*
-        holder.itemView.phoneNumber.text = contactList[position].substringAfter("+91")
-        holder.itemView.setBackgroundColor(colorList[position])
-        holder.itemView.deleteButton.setOnClickListener {
-            delete.invoke(contactList[position])
-        }*/
     }
 
-   /* fun setData(
-        list: List<String>,
-        colorList: List<Int>
-    ) {
-        contactList = list
-        this.colorList = colorList
-        notifyDataSetChanged()
-    }*/
 
     companion object {
         private val DIFF_CALLBACK = object :
@@ -81,8 +60,5 @@ class ContactsRecyclerAdapter(val delete: (String) -> Unit) :
             phoneEditText.text = contact?.number?.substringAfter("+91")
             contact?.color?.let { itemView.setBackgroundColor(it) }
         }
-
-
     }
-
 }
