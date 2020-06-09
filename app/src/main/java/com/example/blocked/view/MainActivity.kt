@@ -15,10 +15,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.blocked.ContactsViewModel
 import com.example.blocked.R
-import com.example.blocked.Utils.Util
 import com.facebook.stetho.Stetho
 import kotlinx.android.synthetic.main.activity_main.*
-import java.util.ArrayList
 
 
 class MainActivity : AppCompatActivity() {
@@ -34,8 +32,13 @@ class MainActivity : AppCompatActivity() {
         Stetho.initializeWithDefaults(this)
 
         val serviceIntent = Intent(this,CallBlockService::class.java)
-        val broadcastIntent = Intent("my.action.string")
-
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O)
+        {
+            startForegroundService(serviceIntent)
+        }else
+        {
+            startService(serviceIntent)
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.statusBarColor = Color.TRANSPARENT
         }
@@ -72,21 +75,6 @@ class MainActivity : AppCompatActivity() {
             it?.forEach {
                 contactList.add(it.number)
             }
-            val array = arrayListOf<String>()
-            array.addAll(contactList)
-
-            broadcastIntent.putStringArrayListExtra("LIST" , array)
-            sendBroadcast(broadcastIntent)
-            serviceIntent.putStringArrayListExtra("LIST" , array)
-            if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O)
-            {
-                startForegroundService(serviceIntent)
-            }else
-            {
-                startService(serviceIntent)
-            }
-
-            Util.blockedNumberList = contactList
         })
     }
 
