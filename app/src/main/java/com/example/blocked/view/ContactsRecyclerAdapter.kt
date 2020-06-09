@@ -33,7 +33,6 @@ class ContactsRecyclerAdapter(val delete: (String) -> Unit) :
         }
     }
 
-
     companion object {
         private val DIFF_CALLBACK = object :
             DiffUtil.ItemCallback<ContactModel>() {
