@@ -15,7 +15,6 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlin.random.Random
 
-
 class ContactsViewModel(application: Application) : AndroidViewModel(application) {
 
     private var database = AppDatabase.getDatabase(application)
